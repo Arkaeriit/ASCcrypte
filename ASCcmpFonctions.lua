@@ -28,11 +28,13 @@ end
 
 -----------------------------------------Doss/table pour l'encodage----------------------------------------------------
 function ls(dossier)
-  local f = io.popen("ls "..dossier,"r")
+  local f = io.popen("ls -a "..dossier,"r")
   local tab = {}
   local a = f:read()
   while a do
-    tab[#tab+1] = a
+    if a~="." and a~=".." then  
+      tab[#tab+1] = a
+    end
     a = f:read()
   end
   f:close()
@@ -116,7 +118,10 @@ function createDir(dir)
   os.execute("mkdir "..dir)
 end
 
-function uncmp(fichierArchive)
+function uncmp(fichierArchive,destination)
+  if destination:sub(#destination,#destination)~="/" then
+    destination = destination.."/"
+  end
   local arch = convertFichTable(fichierArchive)
   local pointeurLigne = 1
   while arch[pointeurLigne]~="Debut de l'archive" do
@@ -124,7 +129,7 @@ function uncmp(fichierArchive)
   end
   pointeurLigne = pointeurLigne + 2
   for i=1,tonumber(arch[pointeurLigne-1]) do
-    createDir(arch[pointeurLigne])
+    createDir(destination..arch[pointeurLigne])
     pointeurLigne = pointeurLigne + 1
   end
   pointeurLigne = pointeurLigne + 1
@@ -143,19 +148,23 @@ function uncmp(fichierArchive)
       pointeurLigne = pointeurLigne + 1
     end
     s=s..arch[pointeurLigne]
-    writeFile(s,file)
+    writeFile(s,destination..file)
     pointeurLigne = pointeurLigne + 2
   end
 end
 
------------------------------------------Test----------------------------------------------------
+-----------------------------------------Interactions C----------------------------------------------------
 
-function test1()
-  local tab = searchDir("/home/maxime/Programation/lua/Autre/")
-  local listeDoss={}
-  archiveDir(tab,listeDoss,"")
-  convertTableFich(listeDoss,"/home/maxime/Programation/lua/Autre/ASCcrypte/test.acm")
-end --test1()
+function compress(dossier,archive)
+    if archive then
+        cmp(dossier,archive)
+    else
+        cmp(dossier,"/tmp/ASCtar")
+        local f = io.open("/tmp/ASCtar","r")
+        io.stdout:write(f:read("a"))
+    end
+end
 
---cmp("/home/maxime/Programation/lua/Autre/","/home/maxime/Programation/lua/Autre/ASCcrypte/test.acm")
---uncmp("/home/maxime/Programation/lua/Autre/ASCcrypte/test.Atar")
+function decompress(archive,destination)
+    uncmp(archive,destination)
+end

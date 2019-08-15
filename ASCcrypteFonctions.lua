@@ -12,7 +12,10 @@ function writeFile(s,fichier) --écrit la chaine de caractères s dans fichier
 end
 
 function encrypt(fichierIN,password,fichierOUT) --Permet d'encripter fichierIn avec le mdp password vers fichierOUT ou stdout
-    --TODO : vérifier si fichier est un dossier
+    if(isDir(fichierIN)) then
+        cmp(fichierIN,"/tmp/ASCcrypte")
+        fichierIN = "/tmp/ASCcrypte"
+    end
     local stringIn = readFile(fichierIN)
     local passwordLong = passwordGenerator(password,#password,#stringIn)
     local stringOut = C_cryptage(stringIn,passwordLong,#stringIn,#passwordLong)
