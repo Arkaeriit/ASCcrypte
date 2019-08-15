@@ -1,4 +1,4 @@
-﻿## ASCcrypte
+﻿# ASCcrypte
 A program made to encrypt files or directories
 
 Disclaimer: I am in no way an expert on cryptography so don't expect to find any incredible algorithm here.
@@ -10,7 +10,7 @@ For example this file:
 Can become this once it is encrypted with the password "Lua and C are very cool":
 ![Alt text](https://i.imgur.com/x67DJSJ.png "Lua and C are indeed very cool!")
 
-# User manual
+## User manual
 To install this just use 
 ```bash
 make && sudo make install
