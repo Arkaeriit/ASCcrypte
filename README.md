@@ -8,9 +8,9 @@ Nonetheless, you can still use this program to encrypt your files with a passwor
 For example this file:
 ![Alt text](https://i.imgur.com/7afNExc.png "A file from this software")
 Can become this once it is encrypted with the password "Lua and C are very cool":
-![Alt text](https://i.imgur.com/7afNExc.png "Lua and C are indeed very cool!")
+![Alt text](https://i.imgur.com/x67DJSJ.png "Lua and C are indeed very cool!")
 
-#User manual
+# User manual
 To install this just use 
 ```bash
 make && sudo make install
@@ -21,7 +21,7 @@ Usage: `ASCcrypte <option> <input file/directory> [password] [output file/direct
 Available options:
 * encryption: Encrypt or decrypt the input file or directory. If the input is a directory it will be compressed first. You need to give a password for this to function.
 * compress: Compress the input directory in a single file.
-* decompress: Decompress a directory from a file. You need to give an output directory for  this function
+* decompress: Decompress a directory from a file. You need to give an output directory for  this function.
 
 If you don't give an output file the result will be written on stdout.
 

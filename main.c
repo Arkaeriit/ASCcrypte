@@ -72,6 +72,6 @@ int main(int argc,char** argv){
 }
 
 void manuel(void){
-    printf("This software is used to compress directories and encrypt files or directories\nUsage: ASCcrypte <option> <input file/directory> [password] [output file/directory]\n\nAvailable options:\n    encryption: Encrypt or decrypt the input file or directory. If the input is a directory it will be compressed first. You need to give a password for this to function.\n    compress: Compress the input directory in a single file.\n    decompress: Decompress a directory from a file. You need to give an output directory for  this function\n\nIf you don't give an output file the result will be written on stdout.\n");
+    printf("This software is used to compress directories and encrypt files or directories\nUsage: ASCcrypte <option> <input file/directory> [password] [output file/directory]\n\nAvailable options:\n    encryption: Encrypt or decrypt the input file or directory. If the input is a directory it will be compressed first. You need to give a password for this to function.\n    compress: Compress the input directory in a single file.\n    decompress: Decompress a directory from a file. You need to give an output directory for  this function.\n\nIf you don't give an output file the result will be written on stdout.\n");
 }
 
