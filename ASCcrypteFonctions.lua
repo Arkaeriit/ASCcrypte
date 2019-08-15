@@ -15,7 +15,7 @@ function encrypt(fichierIN,password,fichierOUT) --Permet d'encripter fichierIn a
     --TODO : vérifier si fichier est un dossier
     local stringIn = readFile(fichierIN)
     local passwordLong = passwordGenerator(password,#password,#stringIn)
-    local stringOut = C_cryptage(stringIn,passwordLong,#stringIn)
+    local stringOut = C_cryptage(stringIn,passwordLong,#stringIn,#passwordLong)
     if fichierOUT then
         writeFile(stringOut,fichierOUT)
     else

@@ -22,7 +22,7 @@ int main(int argc,char** argv){
     
     if(argc>1){ //On a une instruction
         const char* commande = *(argv+1);
-        if(!strcmp(commande,"encrypt") || !strcmp(commande,"decrypt")){ //On encrypte
+        if(!strcmp(commande,"encryption")){ //On encrypte
             if(argc == 2 || argc > 5){ //Il y a une erreur dans le nombre d'arguments
                manuel();
             }else{
@@ -59,6 +59,6 @@ int main(int argc,char** argv){
 }
 
 void manuel(void){
-    printf("This software is used to compress directories and encrypt files or directories\nUsage : ASCcrypte <option> <input file/directory> [password] [output file/directory]\n\nAvailable options :\n    encrypt : Encrypt the input file or directory. If the input is a directory it will be compressed first. You need to give a password for this to function.\n    decrypt : Decript the input file. You need to give a password for this function.\n    compress : Compress the input directory in a single file.\n    decompress : Decompress a directory from a file. You need to give an output directory for  this function\n\nIf you dont give an output file the result will be writen on stdout.\n");
+    printf("This software is used to compress directories and encrypt files or directories\nUsage : ASCcrypte <option> <input file/directory> [password] [output file/directory]\n\nAvailable options :\n    encryption : Encrypt or decrypt the input file or directory. If the input is a directory it will be compressed first. You need to give a password for this to function.\n    compress : Compress the input directory in a single file.\n    decompress : Decompress a directory from a file. You need to give an output directory for  this function\n\nIf you dont give an output file the result will be writen on stdout.\n");
 }
 
