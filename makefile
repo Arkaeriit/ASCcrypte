@@ -1,6 +1,6 @@
 
-ASCcrypte : main.o cryptage.o ASCcmpFonctions.luac ASCcrypteFonctions.luac
-	gcc main.o cryptage.o -llua -lm -ldl -o ASCcrypte
+ASCcrypte : main.o cryptage.o correction.o ASCcmpFonctions.luac ASCcrypteFonctions.luac
+	gcc main.o cryptage.o correction.o -llua -lm -ldl -o ASCcrypte
 
 ASCcmpFonctions.luac : ASCcmpFonctions.lua
 	luac -o ASCcmpFonctions.luac ASCcmpFonctions.lua
@@ -13,6 +13,9 @@ main.o : main.c cryptage.h
 
 cryptage.o : cryptage.c cryptage.h
 	gcc -c cryptage.c -Wall -o cryptage.o
+
+correction.o : correction.c correction.h
+	gcc -c correction.c -Wall -o correction.o
 
 clean :
 	rm -f *.o

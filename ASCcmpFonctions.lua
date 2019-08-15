@@ -27,6 +27,16 @@ function count(base, pattern) --pas de moi
 end
 
 -----------------------------------------Doss/table pour l'encodage----------------------------------------------------
+function exist(fichier)
+    local f = io.open(fichier,"r")
+    if f then
+        f:close()
+        return true
+    else
+        return false
+    end
+end
+
 function ls(dossier)
   local f = io.popen("ls -a "..dossier,"r")
   local tab = {}
@@ -126,6 +136,10 @@ function uncmp(fichierArchive,destination)
   local pointeurLigne = 1
   while arch[pointeurLigne]~="Debut de l'archive" do
     pointeurLigne = pointeurLigne + 1
+    if pointeurLigne > #arch then
+        io.stderr:write("Error: ",fichierArchive," is not a archive file handeled by this software.\n")
+        return nil
+    end
   end
   pointeurLigne = pointeurLigne + 2
   for i=1,tonumber(arch[pointeurLigne-1]) do
@@ -140,7 +154,7 @@ function uncmp(fichierArchive,destination)
 		if not nLigne then
 			break
 		end
-    print(arch[pointeurLigne-1],arch[pointeurLigne],nLigne)
+    --print(arch[pointeurLigne-1],arch[pointeurLigne],nLigne)
     pointeurLigne = pointeurLigne + 1
     local s = ""
     for i = pointeurLigne,pointeurLigne+nLigne-2 do
