@@ -68,6 +68,7 @@ int main(int argc,char** argv){
                     }else{ //Un output file
                         if(isDir(P,*(argv + 3))){
                             fprintf(stderr,"Error, no such file or directory as %s.\n",*(argv + 2));
+                            fprintf(stderr,"Error: %s is a directoty and can not be written over.\n",*(argv + 4));
                         }else{
                             lua_pushstring(L,*(argv + 3));
                             lua_call(L,2,0);
@@ -90,7 +91,44 @@ int main(int argc,char** argv){
                 }
             }
         }
-        if(strcmp(commande,"encryption") && strcmp(commande,"compress") && strcmp(commande,"decompress")){ //mauvaise commande
+        if(!strcmp(commande,"encryptionSTDIN")){
+            if(argc == 3 || argc == 4){ //Bon nombre d'arguments
+                if(argc == 3){ //pas d'output file
+                    lua_getglobal(L,"encrypt");
+                    lua_pushboolean(L,0);
+                    lua_pushstring(L,*(argv + 2));
+                    lua_pushboolean(L,0);
+                    lua_call(L,3,0);
+                }else{ //Un outut file
+                    if(isDir(P,*(argv + 3))){
+                        fprintf(stderr,"Error: %s is a directoty and can not be written over.\n",*(argv + 3));
+                    }else{
+                        lua_getglobal(L,"encrypt");
+                        lua_pushboolean(L,0);
+                        lua_pushstring(L,*(argv + 2));
+                        lua_pushstring(L,*(argv + 3));
+                        lua_call(L,3,0);
+                    }
+                }
+            }else{ //Pas le bon nombre d'arguments
+                manuel();
+            }
+        }
+        if(!strcmp(commande,"decompressSTDIN")){
+            if(argc == 3){
+                if(isDir(P,*(argv + 2))){
+                    lua_getglobal(L,"decompress");
+                    lua_pushboolean(L,0);
+                    lua_pushstring(L,*(argv + 2));
+                    lua_call(L,2,0);
+                }else{
+                    fprintf(stderr,"Error: %s is not a dirrectory.\n",*(argv + 2));
+                }
+            }else{
+                manuel();
+            }
+        }
+        if(strcmp(commande,"encryption") && strcmp(commande,"compress") && strcmp(commande,"decompress") && strcmp(commande,"encryptionSTDIN") && strcmp(commande,"decompressSTDIN")){ //mauvaise commande
             manuel();
         }
     }else{ //Pas d'instruction
@@ -98,10 +136,11 @@ int main(int argc,char** argv){
     }
 
     lua_close(L);
+    lua_close(P);
     return 0;
 }
 
 void manuel(void){
-    fprintf(stderr,"This software is used to compress directories and encrypt files or directories\nUsage: ASCcrypte <option> <input file/directory> [password] [output file/directory]\n\nAvailable options:\n    encryption: Encrypt or decrypt the input file or directory. If the input is a directory it will be compressed first. You need to give a password for this to function.\n    compress: Compress the input directory in a single file.\n    decompress: Decompress a directory from a file. You need to give an output directory for  this function.\n\nIf you don't give an output file the result will be written on stdout.\n");
+    fprintf(stderr,"This software is used to compress directories and encrypt files or directories\nUsage: ASCcrypte <option> [input file/directory] [password] [output file/directory]\n\nAvailable options:\n      encryption: Encrypt or decrypt the input file or directory. If the input is a directory it will be compressed first. You need to give a password for this to function.\n      compress: Compress the input directory in a single file.\n      decompress: Decompress a directory from a file. You need to give an output directory for  this function.\n      encryptionSTDIN: same as encryption but the source is stdin instead of an input file.\n      decompressSTDIN: same as decompress but the source is stdin istead of an input file.\n\nIf you don't give an output file the result will be written on stdout.\n");
 }
 

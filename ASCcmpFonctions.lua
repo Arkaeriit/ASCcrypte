@@ -180,5 +180,13 @@ function compress(dossier,archive)
 end
 
 function decompress(archive,destination)
-    uncmp(archive,destination)
+    if archive then
+        uncmp(archive,destination)
+    else
+        local f = io.open("/tmp/ASCcmpSTDIN","w")
+        f:write(io.stdin:read("a"))
+        f:close()
+        uncmp("/tmp/ASCcmpSTDIN",destination)
+    end
 end
+

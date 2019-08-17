@@ -22,11 +22,14 @@ Available options:
 * encryption: Encrypt or decrypt the input file or directory. If the input is a directory it will be compressed first. You need to give a password for this to function.
 * compress: Compress the input directory in a single file.
 * decompress: Decompress a directory from a file. You need to give an output directory for  this function.
+* encryptionSTDIN: same as encryption but the source is stdin instead of an input file.
+* decompressSTDIN: same as decompress but the source is stdin instead of an input file.
 
 If you don't give an output file the result will be written on stdout.
 
-Example: if you want to encrypt the file test.txt into the file out.crypted with IloveCandLua as a password you have to do :
+Example: if you want to encrypt the file test.txt into the file out.crypted with IloveCandLua as a password you have to do:
 ```bash
 ASCcrypte encryption test.txt IloveCandLua out.crypted
 ```
+
 

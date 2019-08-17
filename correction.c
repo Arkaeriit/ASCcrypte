@@ -23,10 +23,10 @@ int isDir(lua_State *L,char* fichier){
 int correction_decompress(lua_State *L,char* source,char* dest){
     if(exist(L,source)){
         if(isDir(L,dest)){
-            fprintf(stderr,"Error: %s is a dirrectory anc cannot be written over.\n",dest);
-            return 0;
-        }else{
             return 1;
+        }else{
+            fprintf(stderr,"Error: %s is a not dirrectory.\n",dest);
+            return 0;
         }
     }else{
         fprintf(stderr,"Error: no such file as %s.\n",source);
