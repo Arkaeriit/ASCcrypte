@@ -38,7 +38,8 @@ function exist(fichier)
 end
 
 function ls(dossier)
-  local f = io.popen("ls -a "..dossier,"r")
+  local dossierSafe = antiSlashing(dossier)
+  local f = io.popen("ls -a "..dossierSafe,"r")
   local tab = {}
   local a = f:read()
   while a do
@@ -52,14 +53,24 @@ function ls(dossier)
 end
 
 function isDir(fichier)
-  local f = io.popen("ls -l "..fichier,"r")
-  local tab = {}
-  local a = (f:read()):sub(1,1)
+  local fichierSafe = antiSlashing(fichier)
+  local f = io.popen("ls -l "..fichierSafe,"r")
+  local lig = f:read()
+  f:close()
+  local a = (lig):sub(1,1)
   if a=="l" then
     error("lien")
   else
     return a~="-"
   end
+end
+
+function antiSlashing(string) --renvoie une chaine qui est comme string mais avec un anti-slash avant chaque lettre
+    local ret = ""
+    for i=1,#string do
+        ret=ret.."\\"..string:sub(i,i)
+    end
+    return ret
 end
 
 function searchDir(dossier) --écrit le contenu du dossoer dans une table indéxée par le nom du fichier
@@ -125,7 +136,8 @@ end
 --------------------------------------------Lecture de l'archive----------------------------------------------------------------------
 
 function createDir(dir)
-  os.execute("mkdir "..dir)
+  local dossierSafe = antiSlashing(dir)
+  os.execute("mkdir "..dossierSafe)
 end
 
 function uncmp(fichierArchive,destination)
