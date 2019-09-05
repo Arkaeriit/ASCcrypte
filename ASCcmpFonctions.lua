@@ -68,7 +68,12 @@ end
 function antiSlashing(string) --renvoie une chaine qui est comme string mais avec un anti-slash avant chaque lettre
     local ret = ""
     for i=1,#string do
-        ret=ret.."\\"..string:sub(i,i)
+        local char = string:sub(i,i)
+        if char == " " or char == '"' or char == "'" or char == "\\" or char == "(" or char == ")" then --On regarde si un des charactères pose problème. Si s'est le cas on met un \ devant
+            ret=ret.."\\"..char
+        else
+            ret=ret..char
+        end
     end
     return ret
 end
@@ -119,18 +124,18 @@ function cmp(dossier,fichierArchive)
 	if dossier:sub(#dossier,#dossier)~="/" then
 		dossier=dossier.."/"
 	end
-  local dossTable = searchDir(dossier)
-  local directoryList={}
-  archiveDir(dossTable,directoryList,"")
-  local f = io.open(fichierArchive,"w")
-  f:write("Debut de l'archive\n")
-  f:write(tostring(#directoryList),"\n")
-  for i=1,#directoryList do
-    f:write(directoryList[i],"\n")
-  end
-  f:write("\n")
-  archiveFile(dossTable,"",f)
-  f:close()
+    local dossTable = searchDir(dossier)
+    local directoryList={}
+    archiveDir(dossTable,directoryList,"")
+    local f = io.open(fichierArchive,"w")
+    f:write("Debut de l'archive\n")
+    f:write(tostring(#directoryList),"\n")
+    for i=1,#directoryList do
+        f:write(directoryList[i],"\n")
+    end
+    f:write("\n")
+    archiveFile(dossTable,"",f)
+    f:close()
 end
 
 --------------------------------------------Lecture de l'archive----------------------------------------------------------------------
@@ -187,6 +192,7 @@ function compress(dossier,archive)
         cmp(dossier,"/tmp/ASCtar")
         local f = io.open("/tmp/ASCtar","r")
         io.stdout:write(f:read("a"))
+        f:close()
     end
 end
 
