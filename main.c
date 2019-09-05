@@ -1,7 +1,7 @@
 #include "cryptage.h"
 #include "correction.h"
 
-#define devel 0
+#define devel O
 
 void manuel(void);
 
@@ -23,6 +23,7 @@ int main(int argc,char** argv){
     luaL_dofile(L,"ASCcmpFonctions.lua"); //dev
     luaL_dofile(L,"ASCcrypteFonctions.lua"); //dev
     luaL_dofile(P,"ASCcmpFonctions.lua"); //dev
+    printf("Chargement effectué");
 #else
     luaL_dofile(L,"/usr/local/share/ASCcrypte/ASCcmpFonctions.luac");
     luaL_dofile(L,"/usr/local/share/ASCcrypte/ASCcrypteFonctions.luac");

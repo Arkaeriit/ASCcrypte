@@ -69,7 +69,7 @@ function antiSlashing(string) --renvoie une chaine qui est comme string mais ave
     local ret = ""
     for i=1,#string do
         local char = string:sub(i,i)
-        if char == " " or char == '"' or char == "'" or char == "`" or char == "\\" or char == "(" or char == ")" or char == "&" or char == "|" or char == "#" or char == "$" or char == "*" or char == "^" or char == "?" or char == "~" or char ==  "!" then --On regarde si un des charactères pose problème. Si s'est le cas on met un \ devant
+        if char == " " or char == '"' or char == "'" or char == "`" or char == "\\" or char == "(" or char == ")" or char == "&" or char == "|" or char == "#" or char == "$" or char == "*" or char == "^" or char == "?" or char == "~" or char ==  "!" or char == "<" or char == ">" then --On regarde si un des charactères pose problème. Si s'est le cas on met un \ devant
             ret=ret.."\\"..char
         else
             ret=ret..char
@@ -78,16 +78,14 @@ function antiSlashing(string) --renvoie une chaine qui est comme string mais ave
     return ret
 end
 
-function searchDir(dossier) --écrit le contenu du dossoer dans une table indéxée par le nom du fichier
+function searchDir(dossier) --écrit le contenu du dossoer dans une table indéxée par le nom du fichier. Si le fichier est un dossier on recommence sinon on met un 1 pour dire que c'est un fichier.
   local ret = {}
   local doss = ls(dossier)
   for i=1,#doss do
     if isDir(dossier..doss[i]) then
       ret[doss[i]]=searchDir(dossier..doss[i].."/")
     else
-      local f = io.open(dossier..doss[i])
-      ret[doss[i]]=f:read("a")
-      f:close()
+      ret[doss[i]] = 1
     end
   end
   return ret
@@ -109,12 +107,14 @@ function placeFile(str,nomFile,objetFichierArchive)  --str est une chainer conte
   objetFichierArchive:write(nomFile,"\n",tostring(lines+1),"\n",str,"\n","\n")
 end
 
-function archiveFile(dossTable,currentDir,objetFichierArchive) --On écrit les fichiers à archiver dans le fichier
+function archiveFile(dossier,dossTable,currentDir,objetFichierArchive) --On écrit les fichiers à archiver dans le fichier
   for a,v in pairs(dossTable) do
     if type(v)=="table" then
-      archiveFile(v,currentDir..a.."/",objetFichierArchive)
+      archiveFile(dossier,v,currentDir..a.."/",objetFichierArchive)
     else
-      placeFile(v,currentDir..a,objetFichierArchive)
+      local f = io.open(dossier..currentDir..a,"r")
+      placeFile(f:read("a"),currentDir..a,objetFichierArchive)
+      f:close()
     end
   end
 end
@@ -124,17 +124,17 @@ function cmp(dossier,fichierArchive)
 	if dossier:sub(#dossier,#dossier)~="/" then
 		dossier=dossier.."/"
 	end
-    local dossTable = searchDir(dossier)
+    local dossTable = searchDir(dossier) --on récupère la liste des dossiers et des fichiers
     local directoryList={}
-    archiveDir(dossTable,directoryList,"")
+    archiveDir(dossTable,directoryList,"") --on récupère la liste des dossiers à créer
     local f = io.open(fichierArchive,"w")
-    f:write("Debut de l'archive\n")
-    f:write(tostring(#directoryList),"\n")
-    for i=1,#directoryList do
-        f:write(directoryList[i],"\n")
+    f:write("Debut de l'archive\n") --on indique le début
+    f:write(tostring(#directoryList),"\n") --on indique le nombre de dossier à créer
+    for i=1,#directoryList do 
+        f:write(directoryList[i],"\n") --on indique le nom des dossiers à créer
     end
     f:write("\n")
-    archiveFile(dossTable,"",f)
+    archiveFile(dossier,dossTable,"",f) --on écrit les fichiers
     f:close()
 end
 

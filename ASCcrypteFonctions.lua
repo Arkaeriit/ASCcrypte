@@ -30,3 +30,4 @@ function encrypt(fichierIN,password,fichierOUT) --Permet d'encripter fichierIn a
         io.stdout:write(stringOut)
     end
 end
+
