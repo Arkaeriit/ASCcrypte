@@ -141,42 +141,41 @@ function createDir(dir)
 end
 
 function uncmp(fichierArchive,destination)
-  if destination:sub(#destination,#destination)~="/" then
-    destination = destination.."/"
-  end
-  local arch = convertFichTable(fichierArchive)
-  local pointeurLigne = 1
-  while arch[pointeurLigne]~="Debut de l'archive" do
+    if destination:sub(#destination,#destination)~="/" then
+        destination = destination.."/"
+    end
+    local arch = convertFichTable(fichierArchive)
+    local pointeurLigne = 1
+    while arch[pointeurLigne]~="Debut de l'archive" do
     pointeurLigne = pointeurLigne + 1
     if pointeurLigne > #arch then
         io.stderr:write("Error: ",fichierArchive," is not a archive file handeled by this software.\n")
         return nil
     end
-  end
-  pointeurLigne = pointeurLigne + 2
-  for i=1,tonumber(arch[pointeurLigne-1]) do
-    createDir(destination..arch[pointeurLigne])
-    pointeurLigne = pointeurLigne + 1
-  end
-  pointeurLigne = pointeurLigne + 1
-  while arch[pointeurLigne] and arch[pointeurLigne+1] and arch[pointeurLigne+21] do
-    local file = arch[pointeurLigne]
-    pointeurLigne = pointeurLigne + 1
-    local nLigne = tonumber(arch[pointeurLigne])
-		if not nLigne then
-			break
-		end
-    --print(arch[pointeurLigne-1],arch[pointeurLigne],nLigne)
-    pointeurLigne = pointeurLigne + 1
-    local s = ""
-    for i = pointeurLigne,pointeurLigne+nLigne-2 do
-      s=s..arch[pointeurLigne].."\n"
-      pointeurLigne = pointeurLigne + 1
     end
-    s=s..arch[pointeurLigne]
-    writeFile(s,destination..file)
     pointeurLigne = pointeurLigne + 2
-  end
+    for i=1,tonumber(arch[pointeurLigne-1]) do
+        createDir(destination..arch[pointeurLigne])
+        pointeurLigne = pointeurLigne + 1
+    end
+    pointeurLigne = pointeurLigne + 1
+    while arch[pointeurLigne] and arch[pointeurLigne+1] and arch[pointeurLigne+2] do
+        local file = arch[pointeurLigne]
+        pointeurLigne = pointeurLigne + 1
+        local nLigne = tonumber(arch[pointeurLigne])
+        if not nLigne then
+            break
+        end
+        pointeurLigne = pointeurLigne + 1
+        local s = ""
+        for i = pointeurLigne,pointeurLigne+nLigne-2 do
+            s=s..arch[pointeurLigne].."\n"
+            pointeurLigne = pointeurLigne + 1
+        end
+        s=s..arch[pointeurLigne]
+        writeFile(s,destination..file)
+        pointeurLigne = pointeurLigne + 2
+    end
 end
 
 -----------------------------------------Interactions C----------------------------------------------------
