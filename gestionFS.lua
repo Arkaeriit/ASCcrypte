@@ -66,7 +66,7 @@ function antiSlashing(string) --renvoie une chaine qui est comme string mais ave
     local ret = ""
     for i=1,#string do
         local char = string:sub(i,i)
-        if char == " " or char == '"' or char == "'" or char == "`" or char == "\\" or char == "(" or char == ")" or char == "&" or char == "|" or char == "#" or char == "$" or char == "*" or char == "^" or char == "?" or char == "~" or char ==  "!" or char == "<" or char == ">" then --On regarde si un des charactères pose problème. Si s'est le cas on met un \ devant
+        if char == " " or char == '"' or char == "'" or char == "`" or char == "\\" or char == "(" or char == ")" or char == "&" or char == "|" or char == "#" or char == "$" or char == "*" or char == "^" or char == "?" or char == "~" or char ==  "!" or char == "<" or char == ">" or char == ";" then --On regarde si un des charactères pose problème. Si s'est le cas on met un \ devant
             ret=ret.."\\"..char
         else
             ret=ret..char

@@ -30,9 +30,13 @@ function archiveDir(dossTable,directoryList,currentDir) --on fait une liste de t
   end
 end
 
-function placeFile(str,nomFile,objetFichierArchive)  --str est une chainer contenant un fichier nomé nomFile et objetFichierArchive est ce vers quoi on archive,déja ouvert
+function placeFile(dossierSource,nomFile,objetFichierArchive)  --str est une chainer contenant un fichier nomé nomFile et objetFichierArchive est ce vers quoi on archive,déja ouvert
+  local fIN = io.open(dossierSource..nomFile,"r")
+  local str = fIN:read("a")
   local lines = count(str,"\n")
   objetFichierArchive:write(nomFile,"\n",tostring(lines+1),"\n",str,"\n","\n")
+  str = nil
+  fIN:close()
 end
 
 function archiveFile(dossier,dossTable,currentDir,objetFichierArchive) --On écrit les fichiers à archiver dans le fichier
@@ -40,9 +44,7 @@ function archiveFile(dossier,dossTable,currentDir,objetFichierArchive) --On écr
     if type(v)=="table" then
       archiveFile(dossier,v,currentDir..a.."/",objetFichierArchive)
     else
-      local f = io.open(dossier..currentDir..a,"r")
-      placeFile(f:read("a"),currentDir..a,objetFichierArchive)
-      f:close()
+      placeFile(dossier,currentDir..a,objetFichierArchive)
     end
   end
 end
