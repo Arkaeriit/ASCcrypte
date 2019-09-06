@@ -26,12 +26,12 @@ function ls(dossier)
   local dossierSafe = antiSlashing(dossier)
   local f = io.popen("ls -a "..dossierSafe,"r")
   local tab = {}
-  local a = f:read()
+  local a = f:read("l")
   while a do
     if a~="." and a~=".." then  
       tab[#tab+1] = a
     end
-    a = f:read()
+    a = f:read("l")
   end
   f:close()
   return tab
@@ -40,7 +40,7 @@ end
 function isDir(fichier)
   local fichierSafe = antiSlashing(fichier)
   local f = io.popen("ls -l "..fichierSafe,"r")
-  local lig = f:read()
+  local lig = f:read("l")
   f:close()
   local a = (lig):sub(1,1)
   if a=="l" then

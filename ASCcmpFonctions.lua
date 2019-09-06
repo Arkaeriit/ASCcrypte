@@ -73,32 +73,30 @@ function uncmp(fichierArchive,destination)
         destination = destination.."/"
     end
     local arch = io.open(fichierArchive,"r")
-    local line = arch:read()
+    local line = arch:read("l")
     while line ~= "Debut de l'archive" do --on cherche l'indication que l'on commence l'archive
-        line = arch:read()
+        line = arch:read("l")
         if not line then --Si ce n'est pas une bonne  archive on arrête tout
             io.stderr:write("Error: ",fichierArchive," is not an archive file handeled by this software.\n")
             return nil
         end
     end
-    local n = tonumber(arch:read()) --nombre de dossier à créer
+    local n = tonumber(arch:read("l")) --nombre de dossier à créer
     for i=1,n do
-        local dir = arch:read()
-        createDir(destination..dir)
-        --createDir(destination..arch:read())
+        createDir(destination..arch:read("l"))
     end
-    arch:read() --espace vide
-    local file = arch:read() --fichier que l'on va remplir
-    local nLigne = tonumber(arch:read()) --nombre de ligne du fichier
+    arch:read("l") --espace vide
+    local file = arch:read("l") --fichier que l'on va remplir
+    local nLigne = tonumber(arch:read("l")) --nombre de ligne du fichier
     while file and nLigne do
         local f = io.open(destination..file,"w")
         for i=1,nLigne do
             f:write(arch:read("L"))
         end
         f:close()
-        arch:read() --espace vide
-        file = arch:read() --fichier que l'on va remplir
-        nLigne = tonumber(arch:read()) --nombre de ligne du fichier
+        arch:read("l") --espace vide
+        file = arch:read("l") --fichier que l'on va remplir
+        nLigne = tonumber(arch:read("l")) --nombre de ligne du fichier
     end
     arch:close()
 end

@@ -1,7 +1,7 @@
 #include "cryptage.h"
 #include "correction.h"
 
-#define devel 0
+#define devel O
 
 void manuel(void);
 
