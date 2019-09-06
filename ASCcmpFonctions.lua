@@ -145,6 +145,7 @@ function createDir(dir)
   os.execute("mkdir "..dossierSafe)
 end
 
+--[[
 function uncmp(fichierArchive,destination)
     if destination:sub(#destination,#destination)~="/" then
         destination = destination.."/"
@@ -182,6 +183,48 @@ function uncmp(fichierArchive,destination)
         pointeurLigne = pointeurLigne + 2
     end
 end
+]]
+
+function uncmp(fichierArchive,destination)
+    print("Début des travaux")
+    if destination:sub(#destination,#destination) ~= "/" then
+        destination = destination.."/"
+    end
+    local arch = io.open(fichierArchive,"r")
+    local line = arch:read()
+    while line ~= "Debut de l'archive" do --on cherche l'indication que l'on commence l'archive
+        line = arch:read()
+        if not line then --Si ce n'est pas une bonne  archive on arrête tout
+            io.stderr:write("Error: ",fichierArchive," is not an archive file handeled by this software.\n")
+            return nil
+        end
+    end
+    local n = tonumber(arch:read()) --nombre de dossier à créer
+    print("Nombre de dossier à créer: "..tostring(n))
+    for i=1,n do
+        local dir = arch:read()
+        createDir(destination..dir)
+        print("creating: "..dir)
+        --createDir(destination..arch:read())
+    end
+    arch:read() --espace vide
+    local file = arch:read() --fichier que l'on va remplir
+    local nLigne = tonumber(arch:read()) --nombre de ligne du fichier
+    while file and nLigne do
+        print("Decompressing: "..file)
+        local f = io.open(destination..file,"w")
+        for i=1,nLigne do
+            f:write(arch:read("L"))
+        end
+        f:close()
+        arch:read() --espace vide
+        file = arch:read() --fichier que l'on va remplir
+        nLigne = tonumber(arch:read()) --nombre de ligne du fichier
+    end
+    arch:close()
+end
+
+
 
 -----------------------------------------Interactions C----------------------------------------------------
 
