@@ -1,25 +1,4 @@
---Cette fonction sert à l'encryption et au décodage de fichiers.
-
---[[function encrypt(fichierIN,password,fichierOUT) --Permet d'encripter fichierIn avec le mdp password vers fichierOUT ou stdout
-    if fichierIN and (isDir(fichierIN)) then
-        cmp(fichierIN,"/tmp/ASCcrypte")
-        fichierIN = "/tmp/ASCcrypte"
-    end
-    local stringIn
-    if fichierIN then
-        stringIn = readFile(fichierIN)
-    else
-        stringIn = io.stdin:read("a")
-    end
-    local passwordLong = passwordGenerator(password,#password,#stringIn)
-    local stringOut = C_cryptage(stringIn,passwordLong,#stringIn,#passwordLong)
-    if fichierOUT then
-        writeFile(stringOut,fichierOUT)
-    else
-        io.stdout:write(stringOut)
-    end
-end]]
-
+--Ces fonctions servent à l'encryption et au décodage de fichiers.
 
 function encrypt(fichierIN,password,fichierOUT) --Permet d'encripter fichierIn avec le mdp password vers fichierOUT ou stdout
     if fichierIN and (isDir(fichierIN)) then
@@ -40,18 +19,22 @@ function encrypt(fichierIN,password,fichierOUT) --Permet d'encripter fichierIn a
     end
     local passwordLong = passwordGenerator(password,#password)
     local sizeRead = sizeBlock(#passwordLong)
-    local strCripte = input:read(siezRead)
+    print(sizeBlock(#passwordLong),sizeBlock,sizeRead)
+    local strCripte = input:read(sizeRead)
     while strCripte do
-        output:write(strCripte)
-        strCripte = input:read(siezRead)
+        output:write(C_cryptage(strCripte,passwordLong,sizeRead,#passwordLong))
+        strCripte = input:read(sizeRead)
     end
 end
 
 function sizeBlock(lenPL) -- permet de connaitre une taille de block d'eviron 500 MiO
-    local len = math.abs((1048576 * 5) / lenPL) * lenPL --créé un résultat multiple de lenPl
+    local len = math.abs((1048576 * 5) / lenPL) * lenPL --créé un résultat multiple de lenPL
     if len < lenPL then
-        return  lenPL
+        print(lenPL)
+        return math.tointeger(lenPL)
     else
-        return len
+        print(":écfgfguigh ")
+        print(math.tointeger(len))
+        return math.tointeger(len)
     end
 end
