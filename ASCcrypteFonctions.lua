@@ -39,10 +39,19 @@ function encrypt(fichierIN,password,fichierOUT) --Permet d'encripter fichierIn a
         output = io.stdout
     end
     local passwordLong = passwordGenerator(password,#password)
-    local strCripte = input:read(#passwordLong)
+    local sizeRead = sizeBlock(#passwordLong)
+    local strCripte = input:read(siezRead)
     while strCripte do
         output:write(strCripte)
-        strCripte = input:read(#passwordLong)
+        strCripte = input:read(siezRead)
     end
 end
 
+function sizeBlock(lenPL) -- permet de connaitre une taille de block d'eviron 500 MiO
+    local len = math.abs((1048576 * 5) / lenPL) * lenPL --créé un résultat multiple de lenPl
+    if len < lenPL then
+        return  lenPL
+    else
+        return len
+    end
+end
