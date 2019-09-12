@@ -24,8 +24,8 @@ int passwordGenerator(lua_State *L){
     }
     XOSHIRO_seed(pswSum + len * *(psw)); //La somme du mot de passe va nous permettre de choisir le début du hasard.
     unsigned int lenTotal = (4096 + pswSum * (22 + minirand(34))) * (1 + minirand(10)); //La taille du mot de passe allongé est aussi aléatoire
-    if(lenTotal > (1000000000 * minirand(5))){
-        lenTotal = 1000000000 * minirand(5) + 4096 * minirand(255);
+    if(lenTotal > (500000000 * minirand(5))){
+        lenTotal = 500000000 * minirand(5) + 4096 * minirand(255);
     }
     char* ret = malloc(sizeof(char) * lenTotal);
     for(int i=0;i<lenTotal;i++){
@@ -37,7 +37,7 @@ int passwordGenerator(lua_State *L){
     return 1;
 }
 
-void include(lua_State *L){
+void CR_include(lua_State *L){
     lua_pushcfunction(L,cryptage);
     lua_setglobal(L,"C_cryptage");
     lua_pushcfunction(L,passwordGenerator);

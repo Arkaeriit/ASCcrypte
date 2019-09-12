@@ -32,7 +32,7 @@ function encrypt(fichierIN,password,fichierOUT) --Permet d'encripter fichierIn a
 end
 
 function sizeBlock(lenPL) -- permet de connaitre une taille de block d'eviron 500 MiO
-    local len = math.abs((1048576 * 500) / lenPL) * lenPL --créé un résultat multiple de lenPL
+    local len = math.abs(RAM_USAGE_BASE / lenPL) * lenPL --créé un résultat multiple de lenPL
     if len < lenPL then
         return math.tointeger(lenPL)
     else
