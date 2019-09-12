@@ -1,7 +1,8 @@
 #include "cryptage.h"
 #include "correction.h"
+#include "compress.h"
 
-#define devel 0
+#define devel 1
 
 void manuel(void);
 
@@ -10,7 +11,8 @@ int main(int argc,char** argv){
     lua_State* L;
     L = luaL_newstate();
     luaL_openlibs(L);
-    include(L);
+    CR_include(L);
+    CMP_include(L);
 
     //P est une machine secondaire servant à faire les vérifications
     lua_State* P;
@@ -20,11 +22,13 @@ int main(int argc,char** argv){
     //On charge les fichiers
 #if devel == 1
     fprintf(stdout,"Mode de developpement...\n");
+    luaL_dofile(L,"RAMusage.lua"); //dev
     luaL_dofile(L,"ASCcmpFonctions.lua"); //dev
     luaL_dofile(L,"ASCcrypteFonctions.lua"); //dev
     luaL_dofile(L,"gestionFS.lua"); //dev
     luaL_dofile(P,"gestionFS.lua"); //dev
 #else
+    luaL_dofile(L,"/usr/local/share/ASCcrypte/RAMusage.luac");
     luaL_dofile(L,"/usr/local/share/ASCcrypte/ASCcmpFonctions.luac");
     luaL_dofile(L,"/usr/local/share/ASCcrypte/ASCcrypteFonctions.luac");
     luaL_dofile(L,"/usr/local/share/ASCcrypte/gestionFS.luac");

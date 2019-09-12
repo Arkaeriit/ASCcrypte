@@ -1,6 +1,6 @@
 
-ASCcrypte : main.o cryptage.o rng.o correction.o ASCcmpFonctions.luac ASCcrypteFonctions.luac gestionFS.luac RAMusage.luac
-	gcc main.o cryptage.o correction.o rng.o -llua -lm -ldl -o ASCcrypte
+ASCcrypte : main.o cryptage.o rng.o compress.o correction.o ASCcmpFonctions.luac ASCcrypteFonctions.luac gestionFS.luac RAMusage.luac
+	gcc main.o cryptage.o correction.o rng.o compress.o -llua -lm -ldl -o ASCcrypte
 
 ASCcmpFonctions.luac : ASCcmpFonctions.lua
 	luac -o ASCcmpFonctions.luac ASCcmpFonctions.lua
@@ -16,6 +16,9 @@ RAMusage.luac : RAMusage.lua
 
 main.o : main.c cryptage.h
 	gcc -c main.c -Wall -o main.o
+
+compress.o : compress.c compress.h
+	gcc -c compress.c -Wall -o compress.o
 
 cryptage.o : cryptage.c cryptage.h
 	gcc -c cryptage.c -Wall -o cryptage.o

@@ -4,6 +4,22 @@ function count(base, pattern)
     return select(2, string.gsub(base, pattern, ""))
 end
 
+function copieFileToFile(descripteurIN,size,descripteurOUT) --ecrit les size prochain octes de descripteurIN vers descripteurOUT; prend en compte RAM_USAGE_BASE
+    if size > 0 then
+        local pointeur = 0
+        while pointeur < size do
+            if pointeur + RAM_USAGE_BASE > size then
+                descripteurOUT:write(descripteurIN:read(size - pointeur))
+                pointeur = size
+            else
+                descripteurOUT:write(descripteurIN:read(RAM_USAGE_BASE))
+                pointeur = pointeur + RAM_USAGE_BASE
+            end
+        end
+    end
+end
+
+
 -----------------------------------------Doss/table pour l'encodage----------------------------------------------------
 
 function searchDir(dossier) --écrit le contenu du dossoer dans une table indéxée par le nom du fichier. Si le fichier est un dossier on recommence sinon on met un 1 pour dire que c'est un fichier.
@@ -30,13 +46,22 @@ function archiveDir(dossTable,directoryList,currentDir) --on fait une liste de t
   end
 end
 
-function placeFile(dossierSource,nomFile,objetFichierArchive)  --str est une chainer contenant un fichier nomé nomFile et objetFichierArchive est ce vers quoi on archive,déja ouvert
+--[[function placeFile(dossierSource,nomFile,objetFichierArchive)  --str est une chainer contenant un fichier nomé nomFile et objetFichierArchive est ce vers quoi on archive,déja ouvert
   local fIN = io.open(dossierSource..nomFile,"r")
   local str = fIN:read("a")
   local lines = count(str,"\n")
   objetFichierArchive:write(nomFile,"\n",tostring(lines+1),"\n",str,"\n","\n")
   str = nil
   fIN:close()
+end]]
+
+function placeFile(dossierSource,nomFile,objetFichierArchive)
+    local size = fileSize(dossierSource..nomFile)
+    local fIN = io.open(dossierSource..nomFile,"r")
+    objetFichierArchive:write(nomFile,"\n",tostring(size),"\n")
+    copieFileToFile(fIN,size,objetFichierArchive)
+    fIN:close()
+    objetFichierArchive:write("\n\n")
 end
 
 function archiveFile(dossier,dossTable,currentDir,objetFichierArchive) --On écrit les fichiers à archiver dans le fichier
@@ -48,7 +73,6 @@ function archiveFile(dossier,dossTable,currentDir,objetFichierArchive) --On écr
     end
   end
 end
-
 
 function cmp(dossier,fichierArchive)
 	if dossier:sub(#dossier,#dossier)~="/" then
