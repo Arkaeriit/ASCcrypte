@@ -1,9 +1,5 @@
 --Ces fonctions servent à la compression en un seul fichier archive de dossier et à la décompression de ces archives
 
-function count(base, pattern)
-    return select(2, string.gsub(base, pattern, ""))
-end
-
 function copieFileToFile(descripteurIN,size,descripteurOUT) --ecrit les size prochain octes de descripteurIN vers descripteurOUT; prend en compte RAM_USAGE_BASE
     if size > 0 then
         local pointeur = 0
@@ -45,15 +41,6 @@ function archiveDir(dossTable,directoryList,currentDir) --on fait une liste de t
     end
   end
 end
-
---[[function placeFile(dossierSource,nomFile,objetFichierArchive)  --str est une chainer contenant un fichier nomé nomFile et objetFichierArchive est ce vers quoi on archive,déja ouvert
-  local fIN = io.open(dossierSource..nomFile,"r")
-  local str = fIN:read("a")
-  local lines = count(str,"\n")
-  objetFichierArchive:write(nomFile,"\n",tostring(lines+1),"\n",str,"\n","\n")
-  str = nil
-  fIN:close()
-end]]
 
 function placeFile(dossierSource,nomFile,objetFichierArchive)
     local size = fileSize(dossierSource..nomFile)
@@ -113,16 +100,14 @@ function uncmp(fichierArchive,destination)
     end
     arch:read("l") --espace vide
     local file = arch:read("l") --fichier que l'on va remplir
-    local nLigne = tonumber(arch:read("l")) --nombre de ligne du fichier
-    while file and nLigne do
+    local nChar = tonumber(arch:read("l")) --taille du fichier
+    while file and nChar do
         local f = io.open(destination..file,"w")
-        for i=1,nLigne do
-            f:write(arch:read("L"))
-        end
+        copieFileToFile(arch,nChar,f) --On copie notre fichier là où  il faut
         f:close()
-        arch:read("l") --espace vide
+        arch:read(2) --les deux \n que l'on a mis à la fin du fichier
         file = arch:read("l") --fichier que l'on va remplir
-        nLigne = tonumber(arch:read("l")) --nombre de ligne du fichier
+        nChar = tonumber(arch:read("l")) --nombre de ligne du fichier
     end
     arch:close()
 end

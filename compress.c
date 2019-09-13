@@ -6,6 +6,7 @@ int fileSize(lua_State* L){
     descripteurFile = fopen(fileName,"r");
     fseek(descripteurFile,0,SEEK_END);
     long size = ftell(descripteurFile);
+    fclose(descripteurFile);
     lua_pushinteger(L,size);
     return 1;
 }

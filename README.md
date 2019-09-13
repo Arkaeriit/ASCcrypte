@@ -11,10 +11,6 @@ Can become this once it is encrypted with the password "Lua and C are very cool"
 ![Alt text](https://i.imgur.com/x67DJSJ.png "Lua and C are indeed very cool!")
 
 ## User manual
-To install this just use 
-```bash
-make && sudo make install
-```
 
 Usage: `ASCcrypte <option> <input file/directory> [password] [output file/directory]`
 
@@ -32,4 +28,14 @@ Example: if you want to encrypt the file test.txt into the file out.crypted with
 ASCcrypte encryption test.txt IloveCandLua out.crypted
 ```
 
+## Installation
+
+To install this just use 
+```bash
+make && sudo make install
+```
+
+### RAM usage
+
+By default, even if it often doesn't need a lot of RAM, this program will use up to 2 GiB of RAM while compressing or encrypting big files. You can change this by modifying the file RAMusage.lua before compilation. By reducing the default value you will make the program less RAM-needy but a tad slower when compressing or encrypting big files. You can also, if you have a lot of RAM, increasing the value.
 

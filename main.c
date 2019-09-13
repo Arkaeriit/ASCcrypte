@@ -2,7 +2,7 @@
 #include "correction.h"
 #include "compress.h"
 
-#define devel 1
+#define devel 0
 
 void manuel(void);
 

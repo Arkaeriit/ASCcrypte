@@ -34,13 +34,13 @@ clean :
 	rm -f *.luac
 	rm -f ASCcrypte
 
-install : uninstall
-	mkdir /usr/local/share/ASCcrypte
-	cp ASCcrypte /usr/local/bin
-	cp ASCcmpFonctions.luac /usr/local/share/ASCcrypte
-	cp ASCcrypteFonctions.luac /usr/local/share/ASCcrypte
-	cp gestionFS.luac /usr/local/share/ASCcrypte
-	cp RAMusage.luac /usr/local/share/ASCcrypte
+install : 
+	mkdir -p /usr/local/share/ASCcrypte
+	cp -f ASCcrypte /usr/local/bin
+	cp -f ASCcmpFonctions.luac /usr/local/share/ASCcrypte
+	cp -f ASCcrypteFonctions.luac /usr/local/share/ASCcrypte
+	cp -f gestionFS.luac /usr/local/share/ASCcrypte
+	cp -f RAMusage.luac /usr/local/share/ASCcrypte
 
 uninstall :
 	rm -Rf /usr/local/share/ASCcrypte
