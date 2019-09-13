@@ -6,5 +6,5 @@ local GiB = 1073741824
 local MiB = 1048576
 local KiB = 1024
 
-RAM_USAGE_BASE = 500 * MiB
+RAM_USAGE_BASE = 500 * MiB -- <- modify this line
 
