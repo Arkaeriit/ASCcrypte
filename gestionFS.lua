@@ -17,19 +17,6 @@ end
 
 --------------------------------------------Analyse des fichires-------------------------------------------------------------
 
-function isDir(fichier)
-  local fichierSafe = antiSlashing(fichier)
-  local f = io.popen("ls -l "..fichierSafe,"r")
-  local lig = f:read("l")
-  f:close()
-  local a = (lig):sub(1,1)
-  if a=="l" then
-    error("lien")
-  else
-    return a~="-"
-  end
-end
-
 function exist(fichier)
     local f = io.open(fichier,"r")
     if f then

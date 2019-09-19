@@ -28,10 +28,21 @@ int gFS_mkdir(lua_State *L){
     return 0;
 }
 
+int gFS_isDir(lua_State *L){
+    const char* fileName = luaL_checkstring(L,1);
+    struct stat statFichier;
+    stat(fileName,&statFichier);
+    lua_pushboolean(L,S_ISDIR(statFichier.st_mode));
+    return 1;
+}
+
 void gFS_include(lua_State* L){
     lua_pushcfunction(L,gFS_ls);
     lua_setglobal(L,"ls");
     lua_pushcfunction(L,gFS_mkdir);
     lua_setglobal(L,"createDir");
+    lua_pushcfunction(L,gFS_isDir);
+    lua_setglobal(L,"isDir");
 }
+
 

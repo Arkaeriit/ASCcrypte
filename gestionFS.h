@@ -1,6 +1,7 @@
 /*-----------------------------------------------------------\
 |Ces fonctions permettent au script lua d'intéragir propement|
-|avec les système de fichiers.                               |
+|avec les système de fichiers. Ces fonctions sont faites pour|
+fonctionner avec des systèmes POSIX.                         |
 \-----------------------------------------------------------*/
 
 #include <lua.h>
@@ -11,9 +12,11 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <unistd.h>
 
 int gFS_ls(lua_State* L); //permet d'avoir le ls en lua
 int gFS_mkdir(lua_State* L); //permet d'avoir le mkdir en lua
+int gFS_isDir(lua_State* L); //permet de savoir si un fichier est un dossier ou non
 
 void gFS_include(lua_State *L);
 
