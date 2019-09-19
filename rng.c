@@ -33,7 +33,7 @@ uint64_t XOSHIRO_rand(){
 
 
 unsigned int minirand(unsigned int max){
-    int masque = 1 << ((sizeof(int) * 8) - 1);//Dans un premier temps on regarde combien de bits sont nécessaire pour écrire des nombres inférieurs à max. Cela à pour but de réduire le temps de calcul du nombre aléatoire.
+    unsigned int masque = 1 << ((sizeof(unsigned int) * 8) - 1);//Dans un premier temps on regarde combien de bits sont nécessaire pour écrire des nombres inférieurs à max. Cela à pour but de réduire le temps de calcul du nombre aléatoire.
     int nombreBits = 0;
     for(int i=sizeof(int) * 8;i>0;i--){
         if(masque & max){

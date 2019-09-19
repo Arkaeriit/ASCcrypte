@@ -1,8 +1,9 @@
 #include "cryptage.h"
 #include "correction.h"
 #include "compress.h"
+#include "gestionFS.h"
 
-#define devel 0
+#define devel 1
 
 void manuel(void);
 
@@ -13,11 +14,13 @@ int main(int argc,char** argv){
     luaL_openlibs(L);
     CR_include(L);
     CMP_include(L);
+    gFS_include(L);
 
     //P est une machine secondaire servant à faire les vérifications
     lua_State* P;
     P = luaL_newstate();
     luaL_openlibs(P);
+    gFS_include(P);
 
     //On charge les fichiers
 #if devel == 1
