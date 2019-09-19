@@ -15,11 +15,6 @@ function writeFile(s,fichier) --écrit la chaine de caractères s dans fichier
   f:close()
 end
 
-function createDir(dir)
-  local dossierSafe = antiSlashing(dir)
-  os.execute("mkdir "..dossierSafe)
-end
-
 --------------------------------------------Analyse des fichires-------------------------------------------------------------
 
 function isDir(fichier)

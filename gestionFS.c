@@ -1,6 +1,6 @@
 #include "gestionFS.h"
 
-int ls(lua_State* L){
+int gFS_ls(lua_State* L){
     const char* dirName = luaL_checkstring(L,1);
     DIR *dirDesc;
     struct dirent *dirEntry;
@@ -22,8 +22,16 @@ int ls(lua_State* L){
     return 1;
 }
 
+int gFS_mkdir(lua_State *L){
+    const char* dirName = luaL_checkstring(L,1);
+    mkdir(dirName,755);
+    return 0;
+}
+
 void gFS_include(lua_State* L){
-    lua_pushcfunction(L,ls);
+    lua_pushcfunction(L,gFS_ls);
     lua_setglobal(L,"ls");
+    lua_pushcfunction(L,gFS_mkdir);
+    lua_setglobal(L,"createDir");
 }
 
