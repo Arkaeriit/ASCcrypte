@@ -37,5 +37,5 @@ make && sudo make install
 
 ### RAM usage
 
-By default, even if it often doesn't need a lot of RAM, this program will use up to 2 GiB of RAM while compressing or encrypting big files. You can change this by modifying RAM\_USAGE\_BASE in the file the file RAMusage.lua before compilation. By reducing the default value you will make the program less RAM-needy but a tad slower when compressing or encrypting big files. You can also, if you have a lot of RAM, increasing the value.
+By default this program don't use a lot of RAM. If you want to use more RAM for a slight speed improvement or to use even less RAM you can change RAM\_USAGE\_BASE in the file the file RAMusage.lua before compilation.
 
