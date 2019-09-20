@@ -33,6 +33,7 @@ function encrypt(fichierIN,password,fichierOUT) --Permet d'encripter fichierIn a
         output:write(C_cryptage(strCripte,passwordLong,#strCripte,lenPass))
         strCripte = input:read(sizeRead)
     end
+    os.execute("/bin/rm -f /tmp/ASCcrypte /tmp/ASCcrypteDoublon")
 end
 
 function sizeBlock(lenPL) -- permet de connaitre une taille de block d'eviron 500 MiO
@@ -42,5 +43,4 @@ function sizeBlock(lenPL) -- permet de connaitre une taille de block d'eviron 50
     else
         return math.tointeger(len)
     end
-    os.execute("/bin/rm -f /tmp/ASCcrypte /tmp/ASCcrypteDoublon")
 end
