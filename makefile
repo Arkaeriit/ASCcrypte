@@ -38,7 +38,6 @@ install :
 	cp -f ASCcrypte /usr/local/bin
 	cp -f ASCcmpFonctions.luac /usr/local/share/ASCcrypte
 	cp -f ASCcrypteFonctions.luac /usr/local/share/ASCcrypte
-	cp -f gestionFS.luac /usr/local/share/ASCcrypte
 	cp -f RAMusage.luac /usr/local/share/ASCcrypte
 
 uninstall :
