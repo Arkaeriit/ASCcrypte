@@ -6,10 +6,14 @@ function encrypt(fichierIN,password,fichierOUT) --Permet d'encripter fichierIn a
         fichierIN = "/tmp/ASCcrypte"
     end
     if fichierIN and fichierOUT and fichierOUT == fichierIN then --on décode fichier in dans fichier out
+        local tmpFileName = "/tmp/ASCcrypteDoublon" --Fichier tampon par défault
+        if fichierIN == tmpFileName then --si on veux s'occuper d'un fichier qui as le nom par default on peut le faire (c'est pas forcément utile)
+            tmpFileName = "/tmp/ASCcrypteDoublon2"
+        end   
         local f1 = io.open(fichierIN,"r")
-        local f2 = io.open("/tmp/ASCcrypteDoublon","w")
-        copieFileToFile(f1,fileSize(fichierIN),f2)
-        fichierIN = "/tmp/ASCcrypteDoublon"
+        local f2 = io.open(tmpFileName,"w")
+        copieFileToFile(f1,fileSize(fichierIN),f2)  --on copie le fichierIN dans le fichier tampon
+        fichierIN = tmpFileName
         f1:close()
         f2:close()
     end
@@ -33,7 +37,7 @@ function encrypt(fichierIN,password,fichierOUT) --Permet d'encripter fichierIn a
         output:write(C_cryptage(strCripte,passwordLong,#strCripte,lenPass))
         strCripte = input:read(sizeRead)
     end
-    os.execute("/bin/rm -f /tmp/ASCcrypte /tmp/ASCcrypteDoublon")
+    os.execute("/bin/rm -f /tmp/ASCcrypte /tmp/ASCcrypteDoublon /tmp/ASCcrypteDoublon2")
 end
 
 function sizeBlock(lenPL) -- permet de connaitre une taille de block d'eviron 500 MiO
