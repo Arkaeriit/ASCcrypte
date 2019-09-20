@@ -16,12 +16,6 @@ int main(int argc,char** argv){
     CMP_include(L);
     gFS_include(L);
 
-    //P est une machine secondaire servant à faire les vérifications
-    lua_State* P;
-    P = luaL_newstate();
-    luaL_openlibs(P);
-    gFS_include(P);
-
     //On charge les fichiers
 #if devel == 1
     fprintf(stdout,"Mode de developpement...\n");
@@ -29,13 +23,11 @@ int main(int argc,char** argv){
     luaL_dofile(L,"ASCcmpFonctions.lua"); //dev
     luaL_dofile(L,"ASCcrypteFonctions.lua"); //dev
     luaL_dofile(L,"gestionFS.lua"); //dev
-    luaL_dofile(P,"gestionFS.lua"); //dev
 #else
     luaL_dofile(L,"/usr/local/share/ASCcrypte/RAMusage.luac");
     luaL_dofile(L,"/usr/local/share/ASCcrypte/ASCcmpFonctions.luac");
     luaL_dofile(L,"/usr/local/share/ASCcrypte/ASCcrypteFonctions.luac");
     luaL_dofile(L,"/usr/local/share/ASCcrypte/gestionFS.luac");
-    luaL_dofile(P,"/usr/local/share/ASCcrypte/gestionFS.luac");
 #endif
 
     if(argc>1){ //On a une instruction
@@ -44,7 +36,7 @@ int main(int argc,char** argv){
             if(argc == 2 || argc > 5){ //Il y a une erreur dans le nombre d'arguments
                manuel();
             }else{
-                if(exist(P,*(argv + 2))){
+                if(gFS_exist(*(argv + 2))){
                     lua_getglobal(L,"encrypt");
                     lua_pushstring(L,*(argv + 2));
                     lua_pushstring(L,*(argv + 3));
@@ -52,7 +44,7 @@ int main(int argc,char** argv){
                         lua_pushboolean(L,0);
                         lua_call(L,3,0);
                     }else{ //Un output file
-                        if(isDir(P,*(argv + 4))){
+                        if(gFS_isDir(*(argv + 4))){
                             fprintf(stderr,"Error: %s is a directoty and can not be written over.\n",*(argv + 4));
                         }else{
                             lua_pushstring(L,*(argv + 4));
@@ -68,14 +60,14 @@ int main(int argc,char** argv){
             if(argc == 2 || argc > 4){ //Il y a une erreur dans le nombre d'arguments
                 manuel();
             }else{
-                if(isDir(P,*(argv + 2))){
+                if(gFS_isDir(*(argv + 2))){
                     lua_getglobal(L,"compress");
                     lua_pushstring(L,*(argv + 2));
                     if(argc == 3){ //Pas d'ouput file
                         lua_pushboolean(L,0);
                         lua_call(L,2,0);
                     }else{ //Un output file
-                        if(isDir(P,*(argv + 3))){
+                        if(gFS_isDir(*(argv + 3))){
                             fprintf(stderr,"Error, no such file or directory as %s.\n",*(argv + 2));
                             fprintf(stderr,"Error: %s is a directoty and can not be written over.\n",*(argv + 4));
                         }else{
@@ -92,7 +84,7 @@ int main(int argc,char** argv){
             if(argc != 4){ //pas le bon nombre d'arguments
                 manuel();
             }else{
-                if(correction_decompress(P,*(argv+2),*(argv+3))){
+                if(correction_decompress(*(argv+2),*(argv+3))){
                     lua_getglobal(L,"decompress");
                     lua_pushstring(L,*(argv+2));
                     lua_pushstring(L,*(argv+3));
@@ -109,7 +101,7 @@ int main(int argc,char** argv){
                     lua_pushboolean(L,0);
                     lua_call(L,3,0);
                 }else{ //Un outut file
-                    if(isDir(P,*(argv + 3))){
+                    if(gFS_isDir(*(argv + 3))){
                         fprintf(stderr,"Error: %s is a directoty and can not be written over.\n",*(argv + 3));
                     }else{
                         lua_getglobal(L,"encrypt");
@@ -125,7 +117,7 @@ int main(int argc,char** argv){
         }
         if(!strcmp(commande,"decompressSTDIN")){
             if(argc == 3){
-                if(isDir(P,*(argv + 2))){
+                if(gFS_isDir(*(argv + 2))){
                     lua_getglobal(L,"decompress");
                     lua_pushboolean(L,0);
                     lua_pushstring(L,*(argv + 2));
@@ -145,7 +137,6 @@ int main(int argc,char** argv){
     }
 
     lua_close(L);
-    lua_close(P);
     return 0;
 }
 

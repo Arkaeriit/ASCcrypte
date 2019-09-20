@@ -1,5 +1,5 @@
 
-ASCcrypte : main.o cryptage.o rng.o compress.o gestionFS.o correction.o ASCcmpFonctions.luac ASCcrypteFonctions.luac gestionFS.luac RAMusage.luac
+ASCcrypte : main.o cryptage.o rng.o compress.o gestionFS.o correction.o ASCcmpFonctions.luac ASCcrypteFonctions.luac RAMusage.luac
 	gcc main.o cryptage.o correction.o rng.o compress.o gestionFS.o -llua -lm -ldl -o ASCcrypte
 
 ASCcmpFonctions.luac : ASCcmpFonctions.lua
@@ -7,9 +7,6 @@ ASCcmpFonctions.luac : ASCcmpFonctions.lua
 
 ASCcrypteFonctions.luac : ASCcrypteFonctions.lua
 	luac -o ASCcrypteFonctions.luac ASCcrypteFonctions.lua
-
-gestionFS.luac : gestionFS.lua
-	luac -o gestionFS.luac gestionFS.lua
 
 RAMusage.luac : RAMusage.lua
 	luac -o RAMusage.luac RAMusage.lua

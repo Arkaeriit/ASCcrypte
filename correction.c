@@ -1,28 +1,8 @@
 #include "correction.h"
 
-int exist(lua_State *L,char* fichier){
-    lua_getglobal(L,"exist");
-    lua_pushstring(L,fichier);
-    lua_call(L,1,1);
-    int ret = lua_toboolean(L,-1);
-    return ret;
-}
-
-int isDir(lua_State *L,char* fichier){
-    if(exist(L,fichier)){
-        lua_getglobal(L,"isDir");
-        lua_pushstring(L,fichier);
-        lua_call(L,1,1);
-        int ret = lua_toboolean(L,-1);
-        return ret;
-    }else{
-        return 0;
-    }
-}
-
-int correction_decompress(lua_State *L,char* source,char* dest){
-    if(exist(L,source)){
-        if(isDir(L,dest)){
+int correction_decompress(char* source,char* dest){
+    if(gFS_exist(source)){
+        if(gFS_isDir(dest)){
             return 1;
         }else{
             fprintf(stderr,"Error: %s is a not dirrectory.\n",dest);

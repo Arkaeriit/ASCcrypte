@@ -16,7 +16,9 @@ fonctionner avec des systèmes POSIX.                         |
 
 int gFS_ls(lua_State* L); //permet d'avoir le ls en lua
 int gFS_mkdir(lua_State* L); //permet d'avoir le mkdir en lua
-int gFS_isDir(lua_State* L); //permet de savoir si un fichier est un dossier ou non
+int gFS_isDir(const char* fileName); //indique si fileName existe
+int gFS_isDir_lua(lua_State* L); //permet de savoir si un fichier est un dossier ou non
 
 void gFS_include(lua_State *L);
 
+int gFS_exist(const char* fileName); //indique si un fichier existe ou non.
