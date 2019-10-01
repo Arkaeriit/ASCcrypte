@@ -40,7 +40,11 @@ int gFS_isDir_lua(lua_State *L){
     return 1;
 }
 
-
+int gFS_rm(lua_State *L){
+    const char* fileName = luaL_checkstring(L,1);
+    unlink(fileName);
+    return 0;
+}
 
 void gFS_include(lua_State* L){
     lua_pushcfunction(L,gFS_ls);
@@ -49,6 +53,8 @@ void gFS_include(lua_State* L){
     lua_setglobal(L,"createDir");
     lua_pushcfunction(L,gFS_isDir_lua);
     lua_setglobal(L,"isDir");
+    lua_pushcfunction(L,gFS_rm);
+    lua_setglobal(L,"rm");
 }
 
 
