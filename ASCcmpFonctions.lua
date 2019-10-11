@@ -69,7 +69,6 @@ function cmp(dossier,fichierArchive)
     local directoryList={}
     archiveDir(dossTable,directoryList,"") --on récupère la liste des dossiers à créer
     local f = assert(io.open(fichierArchive,"w"))
-    print(f,fichierArchive)
     f:write("Debut de l'archive\n") --on indique le début
     f:write(tostring(#directoryList),"\n") --on indique le nombre de dossier à créer
     for i=1,#directoryList do 
