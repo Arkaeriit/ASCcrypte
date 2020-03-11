@@ -7,13 +7,19 @@
 |des xor les rend joliement appropriés.                               |
 \--------------------------------------------------------------------*/
 
+#ifndef RNG
+#define RNG
+
 #include <stdint.h>
 
 typedef uint64_t XOSHIROetat [4];
 
 uint64_t xorshift_rand(uint64_t seed); //Renvoie un nombre aléatoire calculé à partir d'un xorshift.
 void XOSHIRO_seed(uint64_t seed); //initialise le rng
+void XOSHIRO_importState(XOSHIROetat state);//Importe un état pour le rng
 uint64_t XOSHIRO_rand(); //renvoie un nombre aléatoire calculé à partir du xoshiro**
 
 unsigned int minirand(unsigned int max); //calcule rapidement un entier naturel aléatoire inférieur à max
+
+#endif
 

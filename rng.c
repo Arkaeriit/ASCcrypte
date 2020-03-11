@@ -16,6 +16,11 @@ void XOSHIRO_seed(uint64_t seed){ //Pour remplir tout l'état avec une seule see
     memState[3] = xorshift_rand(memState[2]);
 }
 
+void XOSHIRO_importState(XOSHIROetat state){
+    for(int i=1; i<4; i++)
+        memState[i] = state[i];
+}
+
 uint64_t XOSHIRO_rand(){
     uint64_t const ret = (((memState[1] * 5) << 7) | ((memState[1] * 7) >> (64 - 7)) ) * 9;
     uint64_t const t = memState[1] << 17;

@@ -1,3 +1,8 @@
+/*-----------------------------------------------------------------\
+|Ces fonctions permettent de créer des hash pour initialiser l'état|
+|du RNG xoshiro.                                                   |
+\-----------------------------------------------------------------*/
+
 #ifndef HASH
 #define HASH
 
@@ -9,6 +14,7 @@
 #define min(a,b) ((a<b) ? a : b)
 
 uint64_t minihash(char* str); //Un hash très simple qui renvoit 8 octets
+XOSHIROetat maxihas(const char* str); //Un hash qui donne un résultat de 32 octets
 
 #endif
 
