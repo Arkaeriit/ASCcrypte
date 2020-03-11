@@ -9,14 +9,14 @@ uint64_t minihash(const char* str){
     return ret;
 }
 
-XOSHIROetat maxihash(const char* str){
+XOSHIROetat* maxihash(const char* str){
     uint64_t state = minihash(str);
-    XOSHIROetat ret;
+    XOSHIROetat* ret = malloc(sizeof(XOSHIROetat));
     for(int i=0; i<4; i++){ //Initialisation du hash
-        ret[i] = state;
+        *ret[i] = state;
         state = xorshift_rand(state);
     }
-    char* eq = (char*) ret;
+    char* eq = (char*) *ret;
     for(int i=0; i<strlen(str); i++){
         eq[i%32] ^= str[i] ^ (char) state;
         state = xorshift_rand(state ^ (uint64_t) str[i]);

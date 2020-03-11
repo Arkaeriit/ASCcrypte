@@ -13,8 +13,8 @@
 
 #define min(a,b) ((a<b) ? a : b)
 
-uint64_t minihash(char* str); //Un hash très simple qui renvoit 8 octets
-XOSHIROetat maxihas(const char* str); //Un hash qui donne un résultat de 32 octets
+uint64_t minihash(const char* str); //Un hash très simple qui renvoit 8 octets
+XOSHIROetat* maxihash(const char* str); //Un hash qui donne un résultat de 32 octets
 
 #endif
 
