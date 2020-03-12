@@ -3,7 +3,7 @@
 #include "compress.h"
 #include "gestionFS.h"
 
-#define devel 0
+#define devel 1
 
 void manuel(void);
 
