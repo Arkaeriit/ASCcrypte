@@ -1,6 +1,6 @@
 #include "correction.h"
 
-int correction_decompress(char* source,char* dest){
+int correction_decompress(const char* source,const char* dest){
     if(gFS_exist(source)){
         if(gFS_isDir(dest)){
             return 1;

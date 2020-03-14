@@ -1,7 +1,7 @@
 /*-----------------------------------------------------------\
 |Ces fonctions permettent au script lua d'intéragir propement|
 |avec les système de fichiers. Ces fonctions sont faites pour|
-fonctionner avec des systèmes POSIX.                         |
+|fonctionner avec des systèmes POSIX.                        |
 \-----------------------------------------------------------*/
 
 #include <lua.h>
