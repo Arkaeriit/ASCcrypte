@@ -44,8 +44,9 @@ end
 
 function placeFile(dossierSource,nomFile,objetFichierArchive)
     local size = fileSize(dossierSource..nomFile)
+    local perm = getPerm(dossierSource..nomFile)
     local fIN = io.open(dossierSource..nomFile,"r")
-    objetFichierArchive:write(nomFile,"\n",tostring(size),"\n")
+    objetFichierArchive:write(nomFile,"\n",tostring(size),"\n",tostring(perm),"\n")
     copieFileToFile(fIN,size,objetFichierArchive)
     fIN:close()
     objetFichierArchive:write("\n\n")
@@ -73,6 +74,7 @@ function cmp(dossier,fichierArchive)
     f:write(tostring(#directoryList),"\n") --on indique le nombre de dossier à créer
     for i=1,#directoryList do 
         f:write(directoryList[i],"\n") --on indique le nom des dossiers à créer
+        f:write(tostring(getPerm(dossier..directoryList[i])),"\n")
     end
     f:write("\n")
     archiveFile(dossier,dossTable,"",f) --on écrit les fichiers
