@@ -46,6 +46,20 @@ int gFS_rm(lua_State *L){
     return 0;
 }
 
+int gFS_getPermLua(lua_State *L){
+    const char* fileName = luaL_checkstring(L, 1);
+    mode_t ret = gFS_getPerm(fileName);
+    lua_pushinteger(L, ret);
+    return 1;
+}
+
+int gFS_chmod(lua_State *L){
+    const char* fileName = luaL_checkstring(L, 1);
+    mode_t mode = luaL_checkinteger(L, 2);
+    chmod(fileName, mode);
+    return 0;
+}
+
 void gFS_include(lua_State* L){
     lua_pushcfunction(L,gFS_ls);
     lua_setglobal(L,"ls");
@@ -55,11 +69,21 @@ void gFS_include(lua_State* L){
     lua_setglobal(L,"isDir");
     lua_pushcfunction(L,gFS_rm);
     lua_setglobal(L,"rm");
+    lua_pushcfunction(L,gFS_getPermLua);
+    lua_setglobal(L,"getPerm");
+    lua_pushcfunction(L,gFS_chmod);
+    lua_setglobal(L,"chmod");
 }
 
 
 
 int gFS_exist(const char* fileName){
     return (access( fileName, F_OK ) != -1);
+}
+
+mode_t gFS_getPerm(const char* fileName){
+    struct stat buffer;
+    stat(fileName, &buffer);
+    return buffer.st_mode;
 }
 

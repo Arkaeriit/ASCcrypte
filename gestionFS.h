@@ -4,6 +4,9 @@
 |fonctionner avec des systèmes POSIX.                        |
 \-----------------------------------------------------------*/
 
+#ifndef GESTIONFS_LUA
+#define GESTIONFS_LUA
+
 #include <lua.h>
 #include <lualib.h>
 #include <lauxlib.h>
@@ -19,7 +22,13 @@ int gFS_mkdir(lua_State* L); //permet d'avoir le mkdir en lua
 int gFS_isDir(const char* fileName); //indique si fileName existe
 int gFS_isDir_lua(lua_State* L); //permet de savoir si un fichier est un dossier ou non
 int gFS_rm(lua_State* L); //permet de supprimer un fichier
+int gFS_getPermLua(lua_State* L); //warper autour de getPerm
+int gFS_chmod(lua_State* L); //converti chmod en lua
 
 void gFS_include(lua_State *L);
 
 int gFS_exist(const char* fileName); //indique si un fichier existe ou non.
+mode_t gFS_getPerm(const char* fileName); //Retourne les permitions d'un fihier
+
+#endif
+
