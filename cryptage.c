@@ -32,8 +32,11 @@ int crypte_file(const char* in,const char* out, const char* password){
     XOSHIRO_importState(*state);
     free(state);
     //Cryptage
-    for(size_t i=0; i<size; i++)
-        fputc( fgetc(fin) ^ (char) XOSHIRO_rand(), fout);
+    for(size_t i=0; i<size; i++){
+        char chin = fgetc(fin);
+        char chout = chin ^ (char) XOSHIRO_rand();
+        fputc( chout, fout);
+    }
     //Fermeture des fichiers
     fclose(fout);
     fclose(fin);

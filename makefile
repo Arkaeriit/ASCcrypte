@@ -1,9 +1,11 @@
+FLAGS = -Wall -g
+LUA = -llua -lm -ldl
 
 ASCcrypte : main.o cryptage.o rng.o hash.o compress.o gestionFS.o correction.o ASCcmpFonctions.luac ASCcrypteFonctions.luac RAMusage.luac
-	gcc main.o cryptage.o correction.o rng.o hash.o compress.o gestionFS.o -llua -lm -ldl -o ASCcrypte
+	gcc main.o cryptage.o correction.o rng.o hash.o compress.o gestionFS.o $(FLAGS) $(LUA) -o ASCcrypte
 
 test.bin : test.o cryptage.o rng.o hash.o compress.o gestionFS.o correction.o ASCcmpFonctions.luac ASCcrypteFonctions.luac RAMusage.luac
-	gcc test.o cryptage.o correction.o rng.o hash.o compress.o gestionFS.o -llua -lm -ldl -o test.bin
+	gcc test.o cryptage.o correction.o rng.o hash.o compress.o gestionFS.o $(FLAGS) $(LUA) -o test.bin
 
 ASCcmpFonctions.luac : ASCcmpFonctions.lua
 	luac -o ASCcmpFonctions.luac ASCcmpFonctions.lua
@@ -15,7 +17,7 @@ RAMusage.luac : RAMusage.lua
 	luac -o RAMusage.luac RAMusage.lua
 
 main.o : main.c
-	gcc -c main.c -Wall -o main.o
+	gcc -c main.c $(FLAGS) -o main.o
 
 test.o : test.c
 	gcc -c test.c $(FLAGS) -o test.o

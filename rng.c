@@ -17,7 +17,7 @@ void XOSHIRO_seed(uint64_t seed){ //Pour remplir tout l'état avec une seule see
 }
 
 void XOSHIRO_importState(XOSHIROetat state){
-    for(int i=1; i<4; i++)
+    for(int i=0; i<4; i++)
         memState[i] = state[i];
 }
 

@@ -13,7 +13,7 @@ XOSHIROetat* maxihash(const char* str){
     uint64_t state = minihash(str);
     XOSHIROetat* ret = malloc(sizeof(XOSHIROetat));
     for(int i=0; i<4; i++){ //Initialisation du hash
-        *ret[i] = state;
+        (*ret)[i] = state;
         state = xorshift_rand(state);
     }
     char* eq = (char*) *ret;

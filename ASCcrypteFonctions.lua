@@ -18,9 +18,7 @@ function encrypt(fichierIN,password,fichierOUT) --Permet d'encripter fichierIn a
         f2:close()
     end
     if fichierIN and fichierOUT then
-        print("opencr")
         crypte_file(fichierIN,fichierOUT,password)
-        print("closecr")
     else
         local input
         local output
