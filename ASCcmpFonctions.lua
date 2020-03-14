@@ -98,18 +98,23 @@ function uncmp(fichierArchive,destination)
     end
     local n = tonumber(arch:read("l")) --nombre de dossier à créer
     for i=1,n do
-        createDir(destination..arch:read("l"))
+        local dirName = destination..arch:read("l") --On créé puis on met les permitions des dossiers à créer
+        createDir(dirName)
+        chmod(dirName, tonumber(arch:read("l")))
     end
     arch:read("l") --espace vide
     local file = arch:read("l") --fichier que l'on va remplir
     local nChar = tonumber(arch:read("l")) --taille du fichier
+    local perm = tonumber(arch:read("l")) --permitions du fichier
     while file and nChar do
         local f = io.open(destination..file,"w")
         copieFileToFile(arch,nChar,f) --On copie notre fichier là où  il faut
         f:close()
+        chmod(destination..file, perm)
         arch:read(2) --les deux \n que l'on a mis à la fin du fichier
         file = arch:read("l") --fichier que l'on va remplir
         nChar = tonumber(arch:read("l")) --nombre de ligne du fichier
+        local perm = tonumber(arch:read("l")) --permitions du fichier
     end
     arch:close()
 end
