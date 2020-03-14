@@ -23,6 +23,9 @@ int main(int argc,char** argv){
     luaL_dofile(L,"ASCcmpFonctions.lua"); //dev
     luaL_dofile(L,"ASCcrypteFonctions.lua"); //dev
 #else
+    luaL_dofile(L,"/usr/share/ASCcrypte/RAMusage.luac");
+    luaL_dofile(L,"/usr/share/ASCcrypte/ASCcmpFonctions.luac");
+    luaL_dofile(L,"/usr/share/ASCcrypte/ASCcrypteFonctions.luac");
     luaL_dofile(L,"/usr/local/share/ASCcrypte/RAMusage.luac");
     luaL_dofile(L,"/usr/local/share/ASCcrypte/ASCcmpFonctions.luac");
     luaL_dofile(L,"/usr/local/share/ASCcrypte/ASCcrypteFonctions.luac");
