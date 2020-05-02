@@ -1,7 +1,7 @@
 #include "cryptage.h"
 #include "correction.h"
-#include "compress.h"
 #include "gestionFS.h"
+#include "errors.h"
 
 #define devel 0
 
@@ -13,7 +13,6 @@ int main(int argc,char** argv){
     L = luaL_newstate();
     luaL_openlibs(L);
     CR_include(L);
-    CMP_include(L);
     gFS_include(L);
 
     //On charge les fichiers
@@ -30,12 +29,14 @@ int main(int argc,char** argv){
     luaL_dofile(L,"/usr/local/share/ASCcrypte/ASCcmpFonctions.luac");
     luaL_dofile(L,"/usr/local/share/ASCcrypte/ASCcrypteFonctions.luac");
 #endif
+    addErrorLua(L);
 
     if(argc>1){ //On a une instruction
         const char* commande = *(argv+1);
         if(!strcmp(commande,"encryption")){ //On encrypte
             if(argc == 2 || argc > 5){ //Il y a une erreur dans le nombre d'arguments
                manuel();
+               return ERROR_ARGS;
             }else{
                 if(gFS_exist(*(argv + 2))){
                     lua_getglobal(L,"encrypt");
@@ -47,6 +48,7 @@ int main(int argc,char** argv){
                     }else{ //Un output file
                         if(gFS_isDir(*(argv + 4))){
                             fprintf(stderr,"Error: %s is a directoty and can not be written over.\n",*(argv + 4));
+                            return ERROR_UNWRITABLE;
                         }else{
                             lua_pushstring(L,*(argv + 4));
                             lua_call(L,3,0);
@@ -54,12 +56,14 @@ int main(int argc,char** argv){
                     }
                 }else{
                     fprintf(stderr,"Error, no such file or directory as %s.\n",*(argv + 2));
+                    return ERROR_NO_FILE;
                 }
             }
         }
         if(!strcmp(commande,"compress")){
             if(argc == 2 || argc > 4){ //Il y a une erreur dans le nombre d'arguments
                 manuel();
+                return ERROR_ARGS;
             }else{
                 if(gFS_isDir(*(argv + 2))){
                     lua_getglobal(L,"compress");
@@ -69,8 +73,8 @@ int main(int argc,char** argv){
                         lua_call(L,2,0);
                     }else{ //Un output file
                         if(gFS_isDir(*(argv + 3))){
-                            fprintf(stderr,"Error, no such file or directory as %s.\n",*(argv + 2));
                             fprintf(stderr,"Error: %s is a directoty and can not be written over.\n",*(argv + 4));
+                            return ERROR_UNWRITABLE;
                         }else{
                             lua_pushstring(L,*(argv + 3));
                             lua_call(L,2,0);
@@ -78,6 +82,7 @@ int main(int argc,char** argv){
                     }
                 }else{
                     fprintf(stderr,"Error: no such directory as %s.\n",*(argv + 2));
+                    return ERROR_NO_DIR;
                 }
             }
         }
@@ -89,7 +94,8 @@ int main(int argc,char** argv){
                     lua_getglobal(L,"decompress");
                     lua_pushstring(L,*(argv+2));
                     lua_pushstring(L,*(argv+3));
-                    lua_call(L,2,0);
+                    lua_call(L,2,1);
+                    return lua_tointeger(L,-1);
                 }
             }
         }
@@ -104,6 +110,7 @@ int main(int argc,char** argv){
                 }else{ //Un outut file
                     if(gFS_isDir(*(argv + 3))){
                         fprintf(stderr,"Error: %s is a directoty and can not be written over.\n",*(argv + 3));
+                        return ERROR_UNWRITABLE;
                     }else{
                         lua_getglobal(L,"encrypt");
                         lua_pushboolean(L,0);
@@ -114,6 +121,7 @@ int main(int argc,char** argv){
                 }
             }else{ //Pas le bon nombre d'arguments
                 manuel();
+                return ERROR_ARGS;
             }
         }
         if(!strcmp(commande,"decompressSTDIN")){
@@ -122,12 +130,15 @@ int main(int argc,char** argv){
                     lua_getglobal(L,"decompress");
                     lua_pushboolean(L,0);
                     lua_pushstring(L,*(argv + 2));
-                    lua_call(L,2,0);
+                    lua_call(L,2,1);
+                    return lua_tointeger(L,-1);
                 }else{
                     fprintf(stderr,"Error: %s is not a dirrectory.\n",*(argv + 2));
+                    return ERROR_NO_DIR;
                 }
             }else{
                 manuel();
+                return ERROR_ARGS;
             }
         }
         if(strcmp(commande,"encryption") && strcmp(commande,"compress") && strcmp(commande,"decompress") && strcmp(commande,"encryptionSTDIN") && strcmp(commande,"decompressSTDIN")){ //mauvaise commande

@@ -1,11 +1,11 @@
 FLAGS = -Wall -g
 LUA = -llua -lm -ldl
 
-ASCcrypte : main.o cryptage.o rng.o hash.o compress.o gestionFS.o correction.o ASCcmpFonctions.luac ASCcrypteFonctions.luac RAMusage.luac
-	gcc main.o cryptage.o correction.o rng.o hash.o compress.o gestionFS.o $(FLAGS) $(LUA) -o ASCcrypte
+ASCcrypte : main.o cryptage.o rng.o hash.o gestionFS.o correction.o ASCcmpFonctions.luac ASCcrypteFonctions.luac RAMusage.luac
+	gcc main.o cryptage.o correction.o rng.o hash.o gestionFS.o $(FLAGS) $(LUA) -o ASCcrypte
 
-test.bin : test.o cryptage.o rng.o hash.o compress.o gestionFS.o correction.o ASCcmpFonctions.luac ASCcrypteFonctions.luac RAMusage.luac
-	gcc test.o cryptage.o correction.o rng.o hash.o compress.o gestionFS.o $(FLAGS) $(LUA) -o test.bin
+test.bin : test.o cryptage.o rng.o hash.o gestionFS.o correction.o ASCcmpFonctions.luac ASCcrypteFonctions.luac RAMusage.luac
+	gcc test.o cryptage.o correction.o rng.o hash.o gestionFS.o $(FLAGS) $(LUA) -o test.bin
 
 ASCcmpFonctions.luac : ASCcmpFonctions.lua
 	luac -o ASCcmpFonctions.luac ASCcmpFonctions.lua
@@ -21,9 +21,6 @@ main.o : main.c
 
 test.o : test.c
 	gcc -c test.c $(FLAGS) -o test.o
-
-compress.o : compress.c compress.h
-	gcc -c compress.c $(FLAGS) -o compress.o
 
 cryptage.o : cryptage.c cryptage.h
 	gcc -c cryptage.c $(FLAGS) -o cryptage.o
@@ -47,7 +44,7 @@ clean :
 	rm -f *.o
 	rm -f *.luac
 	rm -f ASCcrypte
-	rm -f out*
+	rm -Rf out*
 
 install : 
 	mkdir -p /usr/local/share/ASCcrypte

@@ -10,6 +10,7 @@
 #include <lua.h>
 #include <lualib.h>
 #include <lauxlib.h>
+#include <stdio.h>
 #include <dirent.h>
 #include <stdlib.h>
 #include <string.h>
@@ -24,6 +25,7 @@ int gFS_isDir_lua(lua_State* L); //permet de savoir si un fichier est un dossier
 int gFS_rm(lua_State* L); //permet de supprimer un fichier
 int gFS_getPermLua(lua_State* L); //warper autour de getPerm
 int gFS_chmod(lua_State* L); //converti chmod en lua
+int fileSize(lua_State* L); //Permet de savoir en lua la taille d'un fichier
 
 void gFS_include(lua_State *L);
 

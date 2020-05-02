@@ -93,7 +93,7 @@ function uncmp(fichierArchive,destination)
         line = arch:read("l")
         if not line then --Si ce n'est pas une bonne  archive on arrête tout
             io.stderr:write("Error: ",fichierArchive," is not an archive file handeled by this software.\n")
-            return nil
+            return ERROR_FORMAT
         end
     end
     local n = tonumber(arch:read("l")) --nombre de dossier à créer
@@ -117,6 +117,7 @@ function uncmp(fichierArchive,destination)
         local perm = tonumber(arch:read("l")) --permitions du fichier
     end
     arch:close()
+    return 0
 end
 
 -----------------------------------------Interactions C----------------------------------------------------
@@ -134,12 +135,12 @@ end
 
 function decompress(archive,destination)
     if archive then
-        uncmp(archive,destination)
+        return uncmp(archive,destination)
     else
         local f = io.open("/tmp/ASCcmpSTDIN","w")
         f:write(io.stdin:read("a"))
         f:close()
-        uncmp("/tmp/ASCcmpSTDIN",destination)
+        return uncmp("/tmp/ASCcmpSTDIN",destination)
     end
 end
 
