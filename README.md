@@ -29,7 +29,7 @@ ASCcrypte encryption test.txt IloveCandLua out.crypted
 ```
 
 ## Installation
-To install evenmorelua you need the library ASCgestionFS, available here: https://github.com/Arkaeriit/ASCgestionFS.
+To install ASCcrypte you need the library ASCgestionFS, available here: https://github.com/Arkaeriit/ASCgestionFS.
 
 When the library is installed, this just use: 
 ```bash
