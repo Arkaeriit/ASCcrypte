@@ -1,7 +1,7 @@
 #include "cryptage.h"
 #include "correction.h"
-#include "gestionFS.h"
 #include "errors.h"
+#include "gFS_plus.h"
 
 #define devel 0
 
@@ -13,7 +13,6 @@ int main(int argc,char** argv){
     L = luaL_newstate();
     luaL_openlibs(L);
     CR_include(L);
-    gFS_include(L);
 
     //On charge les fichiers
 #if devel == 1

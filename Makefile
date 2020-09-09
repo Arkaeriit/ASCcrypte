@@ -1,11 +1,12 @@
-FLAGS = -Wall -g
+FLAGS = -Wall -Werror
+GFS = -lgestionFS
 LUA = -llua -lm -ldl
 
-ASCcrypte : main.o cryptage.o rng.o hash.o gestionFS.o correction.o ASCcmpFonctions.luac ASCcrypteFonctions.luac RAMusage.luac
-	gcc main.o cryptage.o correction.o rng.o hash.o gestionFS.o $(FLAGS) $(LUA) -o ASCcrypte
+ASCcrypte : main.o cryptage.o rng.o hash.o correction.o gFS_plus.o ASCcmpFonctions.luac ASCcrypteFonctions.luac RAMusage.luac
+	gcc main.o cryptage.o correction.o rng.o hash.o gFS_plus.o $(FLAGS) $(LUA) $(GFS) -o ASCcrypte
 
-test.bin : test.o cryptage.o rng.o hash.o gestionFS.o correction.o ASCcmpFonctions.luac ASCcrypteFonctions.luac RAMusage.luac
-	gcc test.o cryptage.o correction.o rng.o hash.o gestionFS.o $(FLAGS) $(LUA) -o test.bin
+test.bin : test.o cryptage.o rng.o hash.o correction.o gFS_plus.o ASCcmpFonctions.luac ASCcrypteFonctions.luac RAMusage.luac
+	gcc test.o cryptage.o correction.o rng.o hash.o gFS_plus.o $(FLAGS) $(LUA) $(GFS) -o test.bin
 
 ASCcmpFonctions.luac : ASCcmpFonctions.lua
 	luac -o ASCcmpFonctions.luac ASCcmpFonctions.lua
@@ -18,6 +19,9 @@ RAMusage.luac : RAMusage.lua
 
 main.o : main.c
 	gcc -c main.c $(FLAGS) -o main.o
+
+gFS_plus.o : gFS_plus.c gFS_plus.h
+	gcc -c gFS_plus.c $(FLAGS) -o gFS_plus.o
 
 test.o : test.c
 	gcc -c test.c $(FLAGS) -o test.o
@@ -33,9 +37,6 @@ hash.o : hash.c hash.h
 
 correction.o : correction.c correction.h
 	gcc -c correction.c $(FLAGS) -o correction.o
-
-gestionFS.o : gestionFS.c gestionFS.h
-	gcc -c gestionFS.c $(FLAGS) -o gestionFS.o
 
 test : test.bin
 	./test.bin

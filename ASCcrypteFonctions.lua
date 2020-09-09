@@ -1,5 +1,7 @@
 --Ces fonctions servent à l'encryption et au décodage de fichiers.
 
+local gFS = require("gestionFS")
+
 function encrypt(fichierIN,password,fichierOUT) --Permet d'encripter fichierIN avec le mdp password vers fichierOUT ou stdout
     if fichierIN and (isDir(fichierIN)) then
         cmp(fichierIN,"/tmp/ASCcrypte") --Si on veut crypter tout un dossier il faut en premier en faire un archive
@@ -35,8 +37,8 @@ function encrypt(fichierIN,password,fichierOUT) --Permet d'encripter fichierIN a
         local str = input:read("a")
         output:write(C_cryptage(str, password, #str))
     end
-    rm("/tmp/ASCcrypte")
-    rm("/tmp/ASCcrypteDoublon")
-    rm("/tmp/ASCcrypteDoublon2")
+    gFS.rm("/tmp/ASCcrypte")
+    gFS.rm("/tmp/ASCcrypteDoublon")
+    gFS.rm("/tmp/ASCcrypteDoublon2")
 end
 

@@ -1,5 +1,7 @@
 --Ces fonctions servent à la compression en un seul fichier archive de dossier et à la décompression de ces archives
 
+local gFS = require("gestionFS")
+
 function copieFileToFile(descripteurIN,size,descripteurOUT) --ecrit les size prochain octes de descripteurIN vers descripteurOUT; prend en compte RAM_USAGE_BASE
     if size > 0 then
         local pointeur = 0
@@ -20,7 +22,7 @@ end
 
 function searchDir(dossier) --écrit le contenu du dossoer dans une table indéxée par le nom du fichier. Si le fichier est un dossier on recommence sinon on met un 1 pour dire que c'est un fichier.
   local ret = {}
-  local doss = ls(dossier)
+  local doss = gFS.ls(dossier)
   for i=1,#doss do
     if isDir(dossier..doss[i]) then
       ret[doss[i]]=searchDir(dossier..doss[i].."/")
@@ -43,8 +45,8 @@ function archiveDir(dossTable,directoryList,currentDir) --on fait une liste de t
 end
 
 function placeFile(dossierSource,nomFile,objetFichierArchive)
-    local size = fileSize(dossierSource..nomFile)
-    local perm = getPerm(dossierSource..nomFile)
+    local size = gFS.fileSize(dossierSource..nomFile)
+    local perm = gFS.getPerm(dossierSource..nomFile)
     local fIN = io.open(dossierSource..nomFile,"r")
     objetFichierArchive:write(nomFile,"\n",tostring(size),"\n",tostring(perm),"\n")
     copieFileToFile(fIN,size,objetFichierArchive)
@@ -74,7 +76,7 @@ function cmp(dossier,fichierArchive)
     f:write(tostring(#directoryList),"\n") --on indique le nombre de dossier à créer
     for i=1,#directoryList do 
         f:write(directoryList[i],"\n") --on indique le nom des dossiers à créer
-        f:write(tostring(getPerm(dossier..directoryList[i])),"\n")
+        f:write(tostring(gFS.getPerm(dossier..directoryList[i])),"\n")
     end
     f:write("\n")
     archiveFile(dossier,dossTable,"",f) --on écrit les fichiers
@@ -99,8 +101,8 @@ function uncmp(fichierArchive,destination)
     local n = tonumber(arch:read("l")) --nombre de dossier à créer
     for i=1,n do
         local dirName = destination..arch:read("l") --On créé puis on met les permitions des dossiers à créer
-        createDir(dirName)
-        chmod(dirName, tonumber(arch:read("l")))
+        gFS.createDir(dirName)
+        gFS.chmod(dirName, tonumber(arch:read("l")))
     end
     arch:read("l") --espace vide
     local file = arch:read("l") --fichier que l'on va remplir
@@ -110,7 +112,7 @@ function uncmp(fichierArchive,destination)
         local f = io.open(destination..file,"w")
         copieFileToFile(arch,nChar,f) --On copie notre fichier là où  il faut
         f:close()
-        chmod(destination..file, perm)
+        gFS.chmod(destination..file, perm)
         arch:read(2) --les deux \n que l'on a mis à la fin du fichier
         file = arch:read("l") --fichier que l'on va remplir
         nChar = tonumber(arch:read("l")) --nombre de ligne du fichier

@@ -1,4 +1,5 @@
 #include "compress.h"
+#include "gFS_plus.h"
 
 int fileSize(lua_State* L){
     const char* fileName = luaL_checkstring(L,1);
